@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   MINIO_ENDPOINT: https://s3.nyxis.com.br
   MINIO_BUCKET: hydocs
-  MINIO_OBJECT: hydocs/versions/hytale-docs-latest.zip
+  MINIO_OBJECT: versions/hytale-docs-latest.zip
 
 jobs:
   build:
