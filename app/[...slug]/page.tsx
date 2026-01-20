@@ -1,4 +1,4 @@
-import { getDocBySlug, getAllDocsPaths } from '@/lib/docs';
+import { getDocBySlug } from '@/lib/docs';
 import { MDXContent } from '@/components/docs/mdx-remote';
 import { notFound } from 'next/navigation';
 
@@ -8,13 +8,7 @@ interface PageProps {
     }>;
 }
 
-// Generate static params for all docs
-export async function generateStaticParams() {
-    const paths = getAllDocsPaths();
-    return paths.map((slug) => ({
-        slug,
-    }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function DocPage({ params }: PageProps) {
     const { slug } = await params;
