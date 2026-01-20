@@ -12,6 +12,9 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  MINIO_ENDPOINT: https://s3.nyxis.com.br
+  MINIO_BUCKET: hydocs
+  MINIO_OBJECT: hydocs/versions/hytale-docs-latest.zip
 
 jobs:
   build:
@@ -19,6 +22,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Download docs from MinIO
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.MINIO_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_EC2_METADATA_DISABLED: true
+          AWS_S3_FORCE_PATH_STYLE: true
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          aws s3 cp "s3://${MINIO_BUCKET}/${MINIO_OBJECT}" ./docs.zip --endpoint-url "${MINIO_ENDPOINT}"
+          unzip -q docs.zip -d docs
+          rm docs.zip
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
