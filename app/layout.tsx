@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Sidebar } from "@/components/docs/sidebar";
 import { MobileNav } from "@/components/docs/nav-mobile";
 import { getDocsTree } from "@/lib/docs";
+import { GAConsent } from "@/components/analytics/ga-consent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +30,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const tree = getDocsTree();
+  const measurementId = process.env.NEXT_PUBLIC_GA_ID ?? "";
+  const analyticsEnabled = process.env.NODE_ENV === "production";
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
+        <GAConsent measurementId={measurementId} enabled={analyticsEnabled} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
