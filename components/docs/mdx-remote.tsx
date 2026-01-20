@@ -59,6 +59,7 @@ export function MDXContent({ source }: MDXContentProps) {
             components={components}
             options={{
                 mdxOptions: {
+                    format: 'md',
                     rehypePlugins: [rehypeHighlight]
                 }
             }}
